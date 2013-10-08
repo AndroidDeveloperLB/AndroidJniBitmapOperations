@@ -22,7 +22,7 @@ public class MainActivity extends Activity
     // original
     //
     final ImageView imageViewOriginal=(ImageView)findViewById(R.id.imageViewOriginal);
-    final Bitmap b=BitmapFactory.decodeResource(getResources(),android.R.drawable.sym_def_app_icon);
+    final Bitmap b=BitmapFactory.decodeResource(getResources(),R.drawable.test);
     imageViewOriginal.setImageBitmap(b);
     //
     // rotated 90 degress CCW
@@ -31,6 +31,13 @@ public class MainActivity extends Activity
     bitmapHolder.storeBitmap(b);
     bitmapHolder.rotateBitmapCcw90();
     imageViewRotated90degressCcw.setImageBitmap(bitmapHolder.getBitmapAndFree());
+    //
+    // rotated 90 degress CW
+    //
+    final ImageView imageViewRotated90degressCw=(ImageView)findViewById(R.id.imageViewRotated90degressCw);
+    bitmapHolder.storeBitmap(b);
+    bitmapHolder.rotateBitmapCw90();
+    imageViewRotated90degressCw.setImageBitmap(bitmapHolder.getBitmapAndFree());
     //
     // cropped
     //

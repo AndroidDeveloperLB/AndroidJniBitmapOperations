@@ -16,7 +16,10 @@ extern "C"
   JNIEXPORT jobject JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniGetBitmapFromStoredBitmapData(JNIEnv * env, jobject obj, jobject handle);
   JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniFreeBitmapData(JNIEnv * env, jobject obj, jobject handle);
   JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotateBitmapCcw90(JNIEnv * env, jobject obj, jobject handle);
+  JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotateBitmapCw90(JNIEnv * env, jobject obj, jobject handle);
+
   JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniCropBitmap(JNIEnv * env, jobject obj, jobject handle, uint32_t left, uint32_t top, uint32_t right, uint32_t bottom);
+
   }
 
 class JniBitmap
@@ -65,11 +68,36 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotate
   AndroidBitmapInfo bitmapInfo = jniBitmap->_bitmapInfo;
   uint32_t* newBitmapPixels = new uint32_t[bitmapInfo.height * bitmapInfo.width];
   int whereToPut = 0;
-  // X.. ...
-  // ...>...
-  // ... X..
+  // X.. ... ... ..X
+  // ...>...>...>...
+  // ... X.. ..X ...
   for (int x = bitmapInfo.width - 1; x >= 0; --x)
     for (int y = 0; y < bitmapInfo.height; ++y)
+      {
+      uint32_t pixel = previousData[bitmapInfo.width * y + x];
+      newBitmapPixels[whereToPut++] = pixel;
+      }
+  delete[] previousData;
+  jniBitmap->_storedBitmapPixels = newBitmapPixels;
+  uint32_t temp = bitmapInfo.width;
+  bitmapInfo.width = bitmapInfo.height;
+  bitmapInfo.height = temp;
+  }
+
+JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotateBitmapCw90(JNIEnv * env, jobject obj, jobject handle)
+  {
+  JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
+  if (jniBitmap->_storedBitmapPixels == NULL)
+    return;
+  uint32_t* previousData = jniBitmap->_storedBitmapPixels;
+  AndroidBitmapInfo bitmapInfo = jniBitmap->_bitmapInfo;
+  uint32_t* newBitmapPixels = new uint32_t[bitmapInfo.height * bitmapInfo.width];
+  int whereToPut = 0;
+  // XY. ..X ... ...
+  // ...>...>...>Y..
+  // ... ... ..X X..
+  for (int x = 0; x < bitmapInfo.width; ++x)
+    for (int y = bitmapInfo.height - 1; y >= 0; --y)
       {
       uint32_t pixel = previousData[bitmapInfo.width * y + x];
       newBitmapPixels[whereToPut++] = pixel;
