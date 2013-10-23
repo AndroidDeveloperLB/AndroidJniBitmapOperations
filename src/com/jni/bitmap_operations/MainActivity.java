@@ -11,7 +11,8 @@ import android.widget.ImageView;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class MainActivity extends Activity
   {
-  JniBitmapHolder bitmapHolder =new JniBitmapHolder();
+  private static final int IMAGE_RESID_TO_TEST =R.drawable.test;
+  JniBitmapHolder          bitmapHolder        =new JniBitmapHolder();
 
   @Override
   protected void onCreate(final Bundle savedInstanceState)
@@ -22,7 +23,7 @@ public class MainActivity extends Activity
     // original
     //
     final ImageView imageViewOriginal=(ImageView)findViewById(R.id.imageViewOriginal);
-    final Bitmap b=BitmapFactory.decodeResource(getResources(),R.drawable.test);
+    final Bitmap b=BitmapFactory.decodeResource(getResources(),IMAGE_RESID_TO_TEST);
     imageViewOriginal.setImageBitmap(b);
     //
     // rotated 90 degress CCW
@@ -46,5 +47,13 @@ public class MainActivity extends Activity
     bitmapHolder.cropBitmap(b.getWidth()/4,b.getHeight()/4,b.getWidth()*3/4,b.getHeight()*3/4);
     imageViewCropped.setImageBitmap(bitmapHolder.getBitmapAndFree());
     //
+    // scaled
+    //
+    final ImageView imageViewScaled=(ImageView)findViewById(R.id.imageViewScaled);
+    // final Bitmap b2=resize(b,b.getWidth()/2,b.getHeight()*2);
+    bitmapHolder.storeBitmap(b);
+    bitmapHolder.scaleBitmap(b.getWidth()*2,b.getHeight());
+    imageViewScaled.setImageBitmap(bitmapHolder.getBitmapAndFree());
+    // imageViewScaled.setImageBitmap(b2);
     }
   }

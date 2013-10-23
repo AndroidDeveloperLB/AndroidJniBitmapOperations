@@ -12,14 +12,20 @@
 
 extern "C"
   {
+  //store
   JNIEXPORT jobject JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniStoreBitmapData(JNIEnv * env, jobject obj, jobject bitmap);
+  //get
   JNIEXPORT jobject JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniGetBitmapFromStoredBitmapData(JNIEnv * env, jobject obj, jobject handle);
+  //free
   JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniFreeBitmapData(JNIEnv * env, jobject obj, jobject handle);
+  //rotate 90 degrees CCW
   JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotateBitmapCcw90(JNIEnv * env, jobject obj, jobject handle);
+  //rotate 90 degrees CW
   JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotateBitmapCw90(JNIEnv * env, jobject obj, jobject handle);
-
+  //crop
   JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniCropBitmap(JNIEnv * env, jobject obj, jobject handle, uint32_t left, uint32_t top, uint32_t right, uint32_t bottom);
-
+  //scale using nearest neighbor
+  JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniScaleNNBitmap(JNIEnv * env, jobject obj, jobject handle, uint32_t newWidth, uint32_t newHeight);
   }
 
 class JniBitmap
@@ -67,15 +73,16 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotate
   uint32_t* previousData = jniBitmap->_storedBitmapPixels;
   AndroidBitmapInfo bitmapInfo = jniBitmap->_bitmapInfo;
   uint32_t* newBitmapPixels = new uint32_t[bitmapInfo.height * bitmapInfo.width];
-  int whereToPut = 0;
-  // X.. ... ... ..X
-  // ...>...>...>...
-  // ... X.. ..X ...
-  for (int x = bitmapInfo.width - 1; x >= 0; --x)
-    for (int y = 0; y < bitmapInfo.height; ++y)
+  int whereToGet = 0;
+  // XY. ... ... ..X
+  // ...>Y..>...>..Y
+  // ... X.. .YX ...
+  for (int x = 0; x < bitmapInfo.width; ++x)
+    for (int y = bitmapInfo.height - 1; y >= 0; --y)
       {
-      uint32_t pixel = previousData[bitmapInfo.width * y + x];
-      newBitmapPixels[whereToPut++] = pixel;
+      //take from each row (up to bottom), from left to right
+      uint32_t pixel = previousData[whereToGet++];
+      newBitmapPixels[bitmapInfo.width * y + x] = pixel;
       }
   delete[] previousData;
   jniBitmap->_storedBitmapPixels = newBitmapPixels;
@@ -92,15 +99,16 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotate
   uint32_t* previousData = jniBitmap->_storedBitmapPixels;
   AndroidBitmapInfo bitmapInfo = jniBitmap->_bitmapInfo;
   uint32_t* newBitmapPixels = new uint32_t[bitmapInfo.height * bitmapInfo.width];
-  int whereToPut = 0;
+  int whereToGet = 0;
   // XY. ..X ... ...
-  // ...>...>...>Y..
-  // ... ... ..X X..
-  for (int x = 0; x < bitmapInfo.width; ++x)
-    for (int y = bitmapInfo.height - 1; y >= 0; --y)
+  // ...>..Y>...>Y..
+  // ... ... .YX X..
+  for (int x = bitmapInfo.width - 1; x >= 0; --x)
+    for (int y = 0; y < bitmapInfo.height; ++y)
       {
-      uint32_t pixel = previousData[bitmapInfo.width * y + x];
-      newBitmapPixels[whereToPut++] = pixel;
+      //take from each row (up to bottom), from left to right
+      uint32_t pixel = previousData[whereToGet++];
+      newBitmapPixels[bitmapInfo.width * y + x] = pixel;
       }
   delete[] previousData;
   jniBitmap->_storedBitmapPixels = newBitmapPixels;
@@ -139,7 +147,7 @@ JNIEXPORT jobject JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniGet
   jclass bitmapConfigClass = env->FindClass("android/graphics/Bitmap$Config");
   jmethodID valueOfBitmapConfigFunction = env->GetStaticMethodID(bitmapConfigClass, "valueOf", "(Ljava/lang/String;)Landroid/graphics/Bitmap$Config;");
   jobject bitmapConfig = env->CallStaticObjectMethod(bitmapConfigClass, valueOfBitmapConfigFunction, configName);
-  jobject newBitmap = env->CallStaticObjectMethod(bitmapCls, createBitmapFunction, jniBitmap->_bitmapInfo.height, jniBitmap->_bitmapInfo.width, bitmapConfig);
+  jobject newBitmap = env->CallStaticObjectMethod(bitmapCls, createBitmapFunction, jniBitmap->_bitmapInfo.width, jniBitmap->_bitmapInfo.height, bitmapConfig);
   //
   // putting the pixels into the new bitmap:
   //
@@ -170,7 +178,7 @@ JNIEXPORT jobject JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniSto
     LOGE("AndroidBitmap_getInfo() failed ! error=%d", ret);
     return NULL;
     }
-  LOGD("width:%d height:%d stride:%d", bitmapInfo.width, bitmapInfo.height, bitmapInfo.stride);
+  //LOGD("width:%d height:%d stride:%d", bitmapInfo.width, bitmapInfo.height, bitmapInfo.stride);
   if (bitmapInfo.format != ANDROID_BITMAP_FORMAT_RGBA_8888)
     {
     LOGE("Bitmap format is not RGBA_8888!");
@@ -195,5 +203,42 @@ JNIEXPORT jobject JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniSto
   jniBitmap->_bitmapInfo = bitmapInfo;
   jniBitmap->_storedBitmapPixels = storedBitmapPixels;
   return env->NewDirectByteBuffer(jniBitmap, 0);
+  }
+
+/**scales the image using the fastest, simplest algorithm called "nearest neighbor" */ //
+JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniScaleNNBitmap(JNIEnv * env, jobject obj, jobject handle, uint32_t newWidth, uint32_t newHeight)
+  {
+  JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
+  if (jniBitmap->_storedBitmapPixels == NULL)
+    return;
+  uint32_t oldWidth = jniBitmap->_bitmapInfo.width;
+  uint32_t oldHeight = jniBitmap->_bitmapInfo.height;
+  uint32_t* previousData = jniBitmap->_storedBitmapPixels;
+  uint32_t* newBitmapPixels = new uint32_t[newWidth * newHeight];
+  int x2, y2;
+  int whereToPut = 0;
+  for (int y = 0; y < newHeight; ++y)
+    {
+    for (int x = 0; x < newWidth; ++x)
+      {
+      x2 = x * oldWidth / newWidth;
+      if (x2 < 0)
+        x2 = 0;
+      else if (x2 >= oldWidth)
+        x2 = oldWidth - 1;
+      y2 = y * oldHeight / newHeight;
+      if (y2 < 0)
+        y2 = 0;
+      else if (y2 >= oldHeight)
+        y2 = oldHeight - 1;
+      newBitmapPixels[whereToPut++] = previousData[(y2 * oldWidth) + x2];
+      //same as : newBitmapPixels[(y * newWidth) + x] = previousData[(y2 * oldWidth) + x2];
+      }
+    }
+
+  delete[] previousData;
+  jniBitmap->_storedBitmapPixels = newBitmapPixels;
+  jniBitmap->_bitmapInfo.width = newWidth;
+  jniBitmap->_bitmapInfo.height = newHeight;
   }
 

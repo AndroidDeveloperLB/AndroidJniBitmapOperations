@@ -23,6 +23,8 @@ public class JniBitmapHolder
 
   private native void jniCropBitmap(ByteBuffer handler,final int left,final int top,final int right,final int bottom);
 
+  private native void jniScaleNNBitmap(ByteBuffer handler,final int newWidth,final int newHeight);
+
   public JniBitmapHolder()
     {}
 
@@ -71,6 +73,13 @@ public class JniBitmapHolder
     final Bitmap bitmap=getBitmap();
     freeBitmap();
     return bitmap;
+    }
+
+  public void scaleBitmap(final int newWidth,final int newHeight)
+    {
+    if(_handler==null)
+      return;
+    jniScaleNNBitmap(_handler,newWidth,newHeight);
     }
 
   public void freeBitmap()
