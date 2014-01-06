@@ -1,0 +1,40 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity"
+  android:layout_width="match_parent" android:layout_height="match_parent">
+  <LinearLayout android:orientation="vertical"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <TextView android:layout_width="wrap_content"
+      android:layout_height="wrap_content" android:text="original"
+      tools:ignore="HardcodedText" />
+    <ImageView android:layout_width="wrap_content"
+      android:layout_height="wrap_content" android:id="@+id/imageViewOriginal"
+      tools:ignore="ContentDescription" />
+
+    <TextView android:layout_width="wrap_content" tools:ignore="HardcodedText"
+      android:layout_height="wrap_content" android:text="rotated 90 degress CCW" />
+    <ImageView android:layout_width="wrap_content"
+      tools:ignore="ContentDescription" android:layout_height="wrap_content"
+      android:id="@+id/imageViewRotated90degressCcw" />
+    
+    <TextView android:layout_width="wrap_content" tools:ignore="HardcodedText"
+      android:layout_height="wrap_content" android:text="rotated 90 degress CW" />
+    <ImageView android:layout_width="wrap_content"
+  tools:ignore="ContentDescription" android:layout_height="wrap_content"
+  android:id="@+id/imageViewRotated90degressCw" />
+
+    <TextView android:layout_width="wrap_content" tools:ignore="HardcodedText"
+      android:layout_height="wrap_content" android:text="cropped" />
+    <ImageView android:layout_width="wrap_content"
+      tools:ignore="ContentDescription" android:layout_height="wrap_content"
+      android:id="@+id/imageViewCropped" />
+    
+    <TextView android:layout_width="wrap_content" tools:ignore="HardcodedText"
+      android:layout_height="wrap_content" android:text="scaled" />
+    <ImageView android:layout_width="wrap_content"
+  tools:ignore="ContentDescription" android:layout_height="wrap_content"
+  android:id="@+id/imageViewScaled" />
+    
+  </LinearLayout>
+</ScrollView> 
