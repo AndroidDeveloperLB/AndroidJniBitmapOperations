@@ -21,6 +21,8 @@ public class JniBitmapHolder
 
   private native void jniRotateBitmapCw90(ByteBuffer handler);
 
+  private native void jniRotateBitmap180(ByteBuffer handler);
+
   private native void jniCropBitmap(ByteBuffer handler,final int left,final int top,final int right,final int bottom);
 
   private native void jniScaleNNBitmap(ByteBuffer handler,final int newWidth,final int newHeight);
@@ -52,6 +54,13 @@ public class JniBitmapHolder
     if(_handler==null)
       return;
     jniRotateBitmapCw90(_handler);
+    }
+
+  public void rotateBitmap180()
+    {
+    if(_handler==null)
+      return;
+    jniRotateBitmap180(_handler);
     }
 
   public void cropBitmap(final int left,final int top,final int right,final int bottom)
