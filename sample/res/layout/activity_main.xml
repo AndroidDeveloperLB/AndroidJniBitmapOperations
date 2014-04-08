@@ -1,40 +1,98 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity"
-  android:layout_width="match_parent" android:layout_height="match_parent">
-  <LinearLayout android:orientation="vertical"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:gravity="center">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
 
-    <TextView android:layout_width="wrap_content"
-      android:layout_height="wrap_content" android:text="original"
-      tools:ignore="HardcodedText" />
-    <ImageView android:layout_width="wrap_content"
-      android:layout_height="wrap_content" android:id="@+id/imageViewOriginal"
-      tools:ignore="ContentDescription" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
 
-    <TextView android:layout_width="wrap_content" tools:ignore="HardcodedText"
-      android:layout_height="wrap_content" android:text="rotated 90 degress CCW" />
-    <ImageView android:layout_width="wrap_content"
-      tools:ignore="ContentDescription" android:layout_height="wrap_content"
-      android:id="@+id/imageViewRotated90degressCcw" />
-    
-    <TextView android:layout_width="wrap_content" tools:ignore="HardcodedText"
-      android:layout_height="wrap_content" android:text="rotated 90 degress CW" />
-    <ImageView android:layout_width="wrap_content"
-  tools:ignore="ContentDescription" android:layout_height="wrap_content"
-  android:id="@+id/imageViewRotated90degressCw" />
+        <!-- original -->
 
-    <TextView android:layout_width="wrap_content" tools:ignore="HardcodedText"
-      android:layout_height="wrap_content" android:text="cropped" />
-    <ImageView android:layout_width="wrap_content"
-      tools:ignore="ContentDescription" android:layout_height="wrap_content"
-      android:id="@+id/imageViewCropped" />
-    
-    <TextView android:layout_width="wrap_content" tools:ignore="HardcodedText"
-      android:layout_height="wrap_content" android:text="scaled" />
-    <ImageView android:layout_width="wrap_content"
-  tools:ignore="ContentDescription" android:layout_height="wrap_content"
-  android:id="@+id/imageViewScaled" />
-    
-  </LinearLayout>
-</ScrollView> 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="original"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/imageViewOriginal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription" />
+
+        <!-- rotated 90 degrees CCW -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="rotated 90 degrees CCW"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/imageViewRotated90degreesCcw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription" />
+
+        <!-- rotated 90 degrees CW -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="rotated 90 degrees CW"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/imageViewRotated90degreesCw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription" />
+
+        <!-- rotated 180 degrees -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="rotated 180 degrees"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/imageViewRotated180degrees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription" />
+
+        <!-- cropped -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cropped"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/imageViewCropped"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription" />
+
+        <!-- scaled -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="scaled"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/imageViewScaled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+</ScrollView>

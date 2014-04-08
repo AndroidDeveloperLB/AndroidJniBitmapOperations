@@ -1,10 +1,14 @@
 package com.example.jnibitmapoperationstest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import com.jni.bitmap_operations.JniBitmapHolder;
 
@@ -27,19 +31,26 @@ public class MainActivity extends Activity
     final Bitmap b=BitmapFactory.decodeResource(getResources(),IMAGE_RESID_TO_TEST);
     imageViewOriginal.setImageBitmap(b);
     //
-    // rotated 90 degress CCW
+    // rotated 90 degrees CCW
     //
-    final ImageView imageViewRotated90degressCcw=(ImageView)findViewById(R.id.imageViewRotated90degressCcw);
+    final ImageView imageViewRotated90degreesCcw=(ImageView)findViewById(R.id.imageViewRotated90degreesCcw);
     bitmapHolder.storeBitmap(b);
     bitmapHolder.rotateBitmapCcw90();
-    imageViewRotated90degressCcw.setImageBitmap(bitmapHolder.getBitmapAndFree());
+    imageViewRotated90degreesCcw.setImageBitmap(bitmapHolder.getBitmapAndFree());
     //
-    // rotated 90 degress CW
+    // rotated 90 degrees CW
     //
-    final ImageView imageViewRotated90degressCw=(ImageView)findViewById(R.id.imageViewRotated90degressCw);
+    final ImageView imageViewRotated90degreesCw=(ImageView)findViewById(R.id.imageViewRotated90degreesCw);
     bitmapHolder.storeBitmap(b);
     bitmapHolder.rotateBitmapCw90();
-    imageViewRotated90degressCw.setImageBitmap(bitmapHolder.getBitmapAndFree());
+    imageViewRotated90degreesCw.setImageBitmap(bitmapHolder.getBitmapAndFree());
+    //
+    // rotate 180
+    //
+    final ImageView imageViewRotated180degreesCw=(ImageView)findViewById(R.id.imageViewRotated180degrees);
+    bitmapHolder.storeBitmap(b);
+    bitmapHolder.rotateBitmap180();;
+    imageViewRotated180degreesCw.setImageBitmap(bitmapHolder.getBitmapAndFree());
     //
     // cropped
     //
@@ -55,6 +66,37 @@ public class MainActivity extends Activity
     bitmapHolder.storeBitmap(b);
     bitmapHolder.scaleBitmap(b.getWidth()*2,b.getHeight());
     imageViewScaled.setImageBitmap(bitmapHolder.getBitmapAndFree());
-    // imageViewScaled.setImageBitmap(b2);
+    }
+
+  @Override
+  public boolean onCreateOptionsMenu(final Menu menu)
+    {
+    getMenuInflater().inflate(R.menu.activity_main,menu);
+    return super.onCreateOptionsMenu(menu);
+    }
+
+  @Override
+  public boolean onOptionsItemSelected(final MenuItem item)
+    {
+    String url=null;
+    switch(item.getItemId())
+      {
+      case R.id.menuItem_all_my_apps:
+        url="https://play.google.com/store/apps/developer?id=Liran+Barsisa";
+        break;
+      case R.id.menuItem_all_my_repositories:
+        url="https://github.com/AndroidDeveloperLB";
+        break;
+      case R.id.menuItem_current_repository_website:
+        url="https://github.com/AndroidDeveloperLB/AndroidJniBitmapOperations";
+        break;
+      }
+    if(url==null)
+      return true;
+    final Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse(url));
+    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY|Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+    startActivity(intent);
+    return true;
     }
   }

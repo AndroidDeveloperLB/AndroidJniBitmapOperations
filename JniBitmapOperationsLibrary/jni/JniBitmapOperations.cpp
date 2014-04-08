@@ -141,23 +141,39 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotate
     JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
     if (jniBitmap->_storedBitmapPixels == NULL)
 	return;
-    uint32_t* previousData = jniBitmap->_storedBitmapPixels;
+    uint32_t* pixels = jniBitmap->_storedBitmapPixels;
+    uint32_t* pixels2 = jniBitmap->_storedBitmapPixels;
     uint32_t width = jniBitmap->_bitmapInfo.width;
     uint32_t height = jniBitmap->_bitmapInfo.height;
-    uint32_t* newBitmapPixels = new uint32_t[width * height];
+    //no need to create a totally new bitmap - it's the exact same size as the original
+    // 1234 fedc
+    // 5678>ba09
+    // 90ab>8765
+    // cdef 4321
     int whereToGet = 0;
-    // XY. ...
-    // ...>...
-    // ... .YX
-    jniBitmap->_storedBitmapPixels = newBitmapPixels;
-    for (int y = height - 1; y >= 0; --y)
-	for (int x = width - 1; x >= 0; --x)
+    for (int y = height - 1; y >= height / 2; --y)
+     for (int x = width - 1; x >= 0; --x)
+     {
+     //take from each row (up to bottom), from left to right
+     uint32_t tempPixel = pixels2[width * y + x];
+     pixels2[width * y + x] = pixels[whereToGet];
+     pixels[whereToGet] = tempPixel;
+     ++whereToGet;
+     }
+    //if the height isn't even, flip the middle row :
+    if (height % 2 == 1)
+	{
+	int y = height / 2;
+	whereToGet = width * y;
+	int lastXToHandle = width % 2 == 0 ? (width / 2) : (width / 2) - 1;
+	for (int x = width - 1; x >= lastXToHandle; --x)
 	    {
-	    //take from each row (up to bottom), from left to right
-	    uint32_t pixel = previousData[whereToGet++];
-	    newBitmapPixels[width * y + x] = pixel;
+	    uint32_t tempPixel = pixels2[width * y + x];
+	    pixels2[width * y + x] = pixels[whereToGet];
+	    pixels[whereToGet] = tempPixel;
+	    ++whereToGet;
 	    }
-    delete[] previousData;
+	}
     }
 
 /**free bitmap*/  //
