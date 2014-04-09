@@ -8,8 +8,8 @@ http://stackoverflow.com/questions/18250951/jni-bitmap-operations-for-helping-to
 
 Please read all of its notes.
 
-How to import
--------------
+How to import the library project
+---------------------------------
 Since ADT (at least till v22.6.2) still has problems importing Android libraries that have C/C++ code (made a post about it [**here**][1]) , the steps are:
 
  1. in case the library has a ".cproject" file , delete it. 
