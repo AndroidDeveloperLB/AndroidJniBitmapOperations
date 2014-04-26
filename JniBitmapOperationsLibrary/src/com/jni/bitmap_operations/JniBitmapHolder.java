@@ -11,6 +11,11 @@ public class JniBitmapHolder
     System.loadLibrary("JniBitmapOperations");
     }
 
+  public enum ScaleMethod
+    {
+    NearestNeighbour,BilinearInterpolation
+    }
+
   private native ByteBuffer jniStoreBitmapData(Bitmap bitmap);
 
   private native Bitmap jniGetBitmapFromStoredBitmapData(ByteBuffer handler);
@@ -26,6 +31,8 @@ public class JniBitmapHolder
   private native void jniCropBitmap(ByteBuffer handler,final int left,final int top,final int right,final int bottom);
 
   private native void jniScaleNNBitmap(ByteBuffer handler,final int newWidth,final int newHeight);
+
+  private native void jniScaleBIBitmap(ByteBuffer handler,final int newWidth,final int newHeight);
 
   public JniBitmapHolder()
     {}
@@ -84,11 +91,19 @@ public class JniBitmapHolder
     return bitmap;
     }
 
-  public void scaleBitmap(final int newWidth,final int newHeight)
+  public void scaleBitmap(final int newWidth,final int newHeight,final ScaleMethod scaleMethod)
     {
     if(_handler==null)
       return;
-    jniScaleNNBitmap(_handler,newWidth,newHeight);
+    switch(scaleMethod)
+      {
+      case BilinearInterpolation:
+        jniScaleBIBitmap(_handler,newWidth,newHeight);
+        break;
+      case NearestNeighbour:
+        jniScaleNNBitmap(_handler,newWidth,newHeight);
+        break;
+      }
     }
 
   public void freeBitmap()

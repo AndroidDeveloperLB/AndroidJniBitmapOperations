@@ -2,3 +2,9 @@ bin
 gen
 armeabi
 /github_2fa_recovery_codes.txt
+/JniBitmapOperationsLibrary/libs/armeabi-v7a
+/JniBitmapOperationsLibrary/libs/mips
+/JniBitmapOperationsLibrary/libs/x86
+/JniBitmapOperationsLibrary/libs/armeabi
+/JniBitmapOperationsLibrary/obj
+/JniBitmapOperationsLibrary/.cproject

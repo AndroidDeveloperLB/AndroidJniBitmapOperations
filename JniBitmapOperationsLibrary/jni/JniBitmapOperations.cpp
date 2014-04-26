@@ -6,7 +6,7 @@
 #include <cstring>
 #include <unistd.h>
 
-#define  LOG_TAG    "DEBUG"
+#define  LOG_TAG    "Applog"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 
@@ -38,6 +38,11 @@ extern "C"
     JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniScaleNNBitmap(
 	    JNIEnv * env, jobject obj, jobject handle, uint32_t newWidth,
 	    uint32_t newHeight);
+
+    //scale using Bilinear Interpolation
+    JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniScaleBIBitmap(
+	    JNIEnv * env, jobject obj, jobject handle, uint32_t newWidth,
+	    uint32_t newHeight);
     }
 
 class JniBitmap
@@ -50,6 +55,25 @@ public:
 	_storedBitmapPixels = NULL;
 	}
     };
+
+typedef struct
+    {
+    uint8_t alpha, red, green, blue;
+    } ARGB;
+
+int32_t convertArgbToInt(ARGB argb)
+    {
+    return (argb.alpha) | (argb.red << 24) | (argb.green << 16)
+	    | (argb.blue << 8);
+    }
+
+void convertIntToArgb(uint32_t pixel, ARGB* argb)
+    {
+    argb->red = ((pixel >> 24) & 0xff);
+    argb->green = ((pixel >> 16) & 0xff);
+    argb->blue = ((pixel >> 8) & 0xff);
+    argb->alpha = (pixel & 0xff);
+    }
 
 /**crops the bitmap within to be smaller. note that no validations are done*/ //
 JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniCropBitmap(
@@ -152,14 +176,14 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotate
     // cdef 4321
     int whereToGet = 0;
     for (int y = height - 1; y >= height / 2; --y)
-     for (int x = width - 1; x >= 0; --x)
-     {
-     //take from each row (up to bottom), from left to right
-     uint32_t tempPixel = pixels2[width * y + x];
-     pixels2[width * y + x] = pixels[whereToGet];
-     pixels[whereToGet] = tempPixel;
-     ++whereToGet;
-     }
+	for (int x = width - 1; x >= 0; --x)
+	    {
+	    //take from each row (up to bottom), from left to right
+	    uint32_t tempPixel = pixels2[width * y + x];
+	    pixels2[width * y + x] = pixels[whereToGet];
+	    pixels[whereToGet] = tempPixel;
+	    ++whereToGet;
+	    }
     //if the height isn't even, flip the middle row :
     if (height % 2 == 1)
 	{
@@ -314,3 +338,133 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniScaleN
     jniBitmap->_bitmapInfo.height = newHeight;
     }
 
+/**scales the image using a high-quality algorithm called "Bilinear Interpolation"
+ * code is based on old university code I've made in Java: http://stackoverflow.com/questions/23230047/trying-to-convert-bilinear-interpolation-code-from-java-to-c-c-on-android/23302384#23302384
+ * */ //
+JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniScaleBIBitmap(
+	JNIEnv * env, jobject obj, jobject handle, uint32_t newWidth,
+	uint32_t newHeight)
+    {
+
+    JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
+    if (jniBitmap->_storedBitmapPixels == NULL)
+	return;
+    uint32_t oldWidth = jniBitmap->_bitmapInfo.width;
+    uint32_t oldHeight = jniBitmap->_bitmapInfo.height;
+    uint32_t* previousData = jniBitmap->_storedBitmapPixels;
+    uint32_t* newBitmapPixels = new uint32_t[newWidth * newHeight];
+    // position of the top left pixel of the 4 pixels to use interpolation on
+    int xTopLeft, yTopLeft;
+    int x, y, lastTopLefty;
+    float xRatio = (float) newWidth / (float) oldWidth, yratio =
+	    (float) newHeight / (float) oldHeight;
+    // Y color ratio to use on left and right pixels for interpolation
+    float ycRatio2 = 0, ycRatio1 = 0;
+    // pixel target in the src
+    float xt, yt;
+    // X color ratio to use on left and right pixels for interpolation
+    float xcRatio2 = 0, xcratio1 = 0;
+    ARGB rgbTopLeft, rgbTopRight, rgbBottomLeft, rgbBottomRight, rgbTopMiddle,
+	    rgbBottomMiddle, result;
+    for (x = 0; x < newWidth; ++x)
+	{
+	xTopLeft = (int) (xt = x / xRatio);
+	// when meeting the most right edge, move left a little
+	if (xTopLeft >= oldWidth - 1)
+	    xTopLeft--;
+	if (xt <= xTopLeft + 1)
+	    {
+	    // we are between the left and right pixel
+	    xcratio1 = xt - xTopLeft;
+	    // color ratio in favor of the right pixel color
+	    xcRatio2 = 1 - xcratio1;
+	    }
+	for (y = 0, lastTopLefty = -30000; y < newHeight; ++y)
+	    {
+	    yTopLeft = (int) (yt = y / yratio);
+	    // when meeting the most bottom edge, move up a little
+	    if (yTopLeft >= oldHeight - 1)
+		--yTopLeft;
+	    if (lastTopLefty == yTopLeft - 1)
+		{
+		// we went down only one rectangle
+		rgbTopLeft = rgbBottomLeft;
+		rgbTopRight = rgbBottomRight;
+		rgbTopMiddle = rgbBottomMiddle;
+		//rgbBottomLeft=startingImageData[xTopLeft][yTopLeft+1];
+		convertIntToArgb(
+			previousData[((yTopLeft + 1) * oldWidth) + xTopLeft],
+			&rgbBottomLeft);
+		//rgbBottomRight=startingImageData[xTopLeft+1][yTopLeft+1];
+		convertIntToArgb(
+			previousData[((yTopLeft + 1) * oldWidth)
+				+ (xTopLeft + 1)], &rgbBottomRight);
+		rgbBottomMiddle.alpha = rgbBottomLeft.alpha * xcRatio2
+			+ rgbBottomRight.alpha * xcratio1;
+		rgbBottomMiddle.red = rgbBottomLeft.red * xcRatio2
+			+ rgbBottomRight.red * xcratio1;
+		rgbBottomMiddle.green = rgbBottomLeft.green * xcRatio2
+			+ rgbBottomRight.green * xcratio1;
+		rgbBottomMiddle.blue = rgbBottomLeft.blue * xcRatio2
+			+ rgbBottomRight.blue * xcratio1;
+		}
+	    else if (lastTopLefty != yTopLeft)
+		{
+		// we went to a totally different rectangle (happens in every loop start,and might happen more when making the picture smaller)
+		//rgbTopLeft=startingImageData[xTopLeft][yTopLeft];
+		convertIntToArgb(previousData[(yTopLeft * oldWidth) + xTopLeft],
+			&rgbTopLeft);
+		//rgbTopRight=startingImageData[xTopLeft+1][yTopLeft];
+		convertIntToArgb(
+			previousData[((yTopLeft + 1) * oldWidth) + xTopLeft],
+			&rgbTopRight);
+		rgbTopMiddle.alpha = rgbTopLeft.alpha * xcRatio2
+			+ rgbTopRight.alpha * xcratio1;
+		rgbTopMiddle.red = rgbTopLeft.red * xcRatio2
+			+ rgbTopRight.red * xcratio1;
+		rgbTopMiddle.green = rgbTopLeft.green * xcRatio2
+			+ rgbTopRight.green * xcratio1;
+		rgbTopMiddle.blue = rgbTopLeft.blue * xcRatio2
+			+ rgbTopRight.blue * xcratio1;
+		//rgbBottomLeft=startingImageData[xTopLeft][yTopLeft+1];
+		convertIntToArgb(
+			previousData[((yTopLeft + 1) * oldWidth) + xTopLeft],
+			&rgbBottomLeft);
+		//rgbBottomRight=startingImageData[xTopLeft+1][yTopLeft+1];
+		convertIntToArgb(
+			previousData[((yTopLeft + 1) * oldWidth)
+				+ (xTopLeft + 1)], &rgbBottomRight);
+		rgbBottomMiddle.alpha = rgbBottomLeft.alpha * xcRatio2
+			+ rgbBottomRight.alpha * xcratio1;
+		rgbBottomMiddle.red = rgbBottomLeft.red * xcRatio2
+			+ rgbBottomRight.red * xcratio1;
+		rgbBottomMiddle.green = rgbBottomLeft.green * xcRatio2
+			+ rgbBottomRight.green * xcratio1;
+		rgbBottomMiddle.blue = rgbBottomLeft.blue * xcRatio2
+			+ rgbBottomRight.blue * xcratio1;
+		}
+	    lastTopLefty = yTopLeft;
+	    if (yt <= yTopLeft + 1)
+		{
+		// color ratio in favor of the bottom pixel color
+		ycRatio1 = yt - yTopLeft;
+		ycRatio2 = 1 - ycRatio1;
+		}
+	    // prepared all pixels to look at, so finally set the new pixel data
+	    result.alpha = rgbTopMiddle.alpha * ycRatio2
+		    + rgbBottomMiddle.alpha * ycRatio1;
+	    result.blue = rgbTopMiddle.blue * ycRatio2
+		    + rgbBottomMiddle.blue * ycRatio1;
+	    result.red = rgbTopMiddle.red * ycRatio2
+		    + rgbBottomMiddle.red * ycRatio1;
+	    result.green = rgbTopMiddle.green * ycRatio2
+		    + rgbBottomMiddle.green * ycRatio1;
+	    newBitmapPixels[(y * newWidth) + x] = convertArgbToInt(result);
+	    }
+	}
+    //get rid of old data, and replace it with new one
+    delete[] previousData;
+    jniBitmap->_storedBitmapPixels = newBitmapPixels;
+    jniBitmap->_bitmapInfo.width = newWidth;
+    jniBitmap->_bitmapInfo.height = newHeight;
+    }

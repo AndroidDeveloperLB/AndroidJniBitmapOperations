@@ -80,16 +80,30 @@
             android:layout_height="wrap_content"
             tools:ignore="ContentDescription" />
 
-        <!-- scaled -->
+        <!-- scaled using nearest neighbour -->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="scaled"
+            android:text="scaled using &apos;Nearest Neighbour&apos; algorithm"
             tools:ignore="HardcodedText" />
 
         <ImageView
-            android:id="@+id/imageViewScaled"
+            android:id="@+id/imageViewScaledUsingNearestNeighbour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription" />
+
+        <!-- scaled using bilinear interpolation -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="scaled using &apos;Bilinear Interpolation&apos; algorithm"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+            android:id="@+id/imageViewScaledUsingBilinearInterpolation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:ignore="ContentDescription" />

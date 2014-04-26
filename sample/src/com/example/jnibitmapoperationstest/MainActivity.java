@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import com.jni.bitmap_operations.JniBitmapHolder;
+import com.jni.bitmap_operations.JniBitmapHolder.ScaleMethod;
 
 /** just a demo activity to show some of the features of the library */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -59,13 +60,21 @@ public class MainActivity extends Activity
     bitmapHolder.cropBitmap(b.getWidth()/4,b.getHeight()/4,b.getWidth()*3/4,b.getHeight()*3/4);
     imageViewCropped.setImageBitmap(bitmapHolder.getBitmapAndFree());
     //
-    // scaled
+    // scaled using nearest neighbor algorithm (which is fast, simple, yet it sometimes has aliases problems)
     //
-    final ImageView imageViewScaled=(ImageView)findViewById(R.id.imageViewScaled);
-    // final Bitmap b2=resize(b,b.getWidth()/2,b.getHeight()*2);
+    final ImageView imageViewScaledUsingNearestNeighbour=(ImageView)findViewById(R.id.imageViewScaledUsingNearestNeighbour);
     bitmapHolder.storeBitmap(b);
-    bitmapHolder.scaleBitmap(b.getWidth()*2,b.getHeight());
-    imageViewScaled.setImageBitmap(bitmapHolder.getBitmapAndFree());
+    bitmapHolder.scaleBitmap(b.getWidth()*2,b.getHeight()*2,ScaleMethod.NearestNeighbour);
+    final Bitmap scaledBitmapNN=bitmapHolder.getBitmapAndFree();
+    imageViewScaledUsingNearestNeighbour.setImageBitmap(scaledBitmapNN);
+    //
+    // scaled using nearest neighbor algorithm (which is relatively high quality resizing and it handles aliases nicely)
+    //
+    final ImageView imageViewScaledUsingBilinearInterpolation=(ImageView)findViewById(R.id.imageViewScaledUsingBilinearInterpolation);
+    bitmapHolder.storeBitmap(b);
+    bitmapHolder.scaleBitmap(b.getWidth()*2,b.getHeight()*2,ScaleMethod.BilinearInterpolation);
+    final Bitmap scaledBitmapBI=bitmapHolder.getBitmapAndFree();
+    imageViewScaledUsingBilinearInterpolation.setImageBitmap(scaledBitmapBI);
     }
 
   @Override
