@@ -3,8 +3,8 @@ LOCAL_PATH := $(call my-dir)
 #bitmap operations module
 include $(CLEAR_VARS)
 
-LOCAL_MODULE    := JniBitmapOperations
-LOCAL_SRC_FILES := JniBitmapOperations.cpp
+LOCAL_MODULE    := JniBitmapOperationsLibrary
+LOCAL_SRC_FILES := JniBitmapOperationsLibrary.cpp
 LOCAL_LDLIBS := -llog
 LOCAL_LDFLAGS += -ljnigraphics
 

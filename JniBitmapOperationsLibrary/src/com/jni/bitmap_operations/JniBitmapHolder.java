@@ -8,7 +8,7 @@ public class JniBitmapHolder
   ByteBuffer _handler =null;
   static
     {
-    System.loadLibrary("JniBitmapOperations");
+    System.loadLibrary("JniBitmapOperationsLibrary");
     }
 
   public enum ScaleMethod
