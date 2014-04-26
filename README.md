@@ -13,12 +13,25 @@ Some of the operations are:
  More information about those algorithms here:
  http://en.wikipedia.org/wiki/Image_scaling
  
-As the reszing algorithms deal with colors, they also show how to create your own algorithms for handling pixels. 
+As the resizing algorithms deal with colors, they also show how to create your own algorithms for handling pixels. 
 You can make filters and implement other ways to resize images. Please consider contributing your own code for such operations.
 
 This library was first introduced via StackOverflow, and many of the notes written there still hold now.
 Please read it here:
 http://stackoverflow.com/questions/18250951/jni-bitmap-operations-for-helping-to-avoid-oom-when-using-large-images/18250952?noredirect=1
+
+Missing features (TODO)
+-----------------------
+
+The things I think this library should have :
+
+ 1. using matrices for manipulating of the imaages.
+ 2. decode the image directly within JNI, instead of giving it from the Java "world". This should be very handy.
+ 3. use different bitmap formats. Also think how to manage them nicely.                                                            
+ 4. get current bitmap info.
+ 5. face detection
+ 6. rotation by any angle. 
+ 7. other basic operations that are available on the Android framework.
 
 How to import the library project
 ---------------------------------
