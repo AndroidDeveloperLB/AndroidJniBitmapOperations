@@ -5,7 +5,7 @@ Allows to perform various simple operations on bitmaps via JNI , while also prov
 
 Some of the operations are:
  - store/restore bitmaps to/from JNI.
- - rotate CW/CCW 90 degrees, and also 180 degrees.
+ - rotate CW/CCW 90,180,270 degrees.
  - crop image
  - scale image using either "Nearest-Neighbor" algorithm or "Bilinear-Interpolation" algorithm.
  The first is fast but might cause aliasing artifacts on some cases, and the other is a bit slower but resizes the images nicely and avoids having aliasing artifacts. 
