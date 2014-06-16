@@ -50,3 +50,6 @@ Since ADT (at least till v22.6.2) still has problems importing Android libraries
 
 
 For now, I've handled steps 1-2 (I just made Git to ignore those files), so all you need to do is the rest of the steps.
+
+
+ [1]: http://stackoverflow.com/questions/22263253/how-to-correctly-import-an-android-library-with-jni-code/22956790?noredirect=1#comment35057887_22956790
