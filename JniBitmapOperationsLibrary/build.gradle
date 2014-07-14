@@ -1,25 +1,10 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.11.+'
-        classpath 'com.github.dcendents:android-maven-plugin:1.0'
-    }
-}
-
 apply plugin: 'android-library'
-apply plugin: 'android-maven'
 
 version '0.0.1'
 group 'com.jni.bitmap_operations'
 
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    compile 'com.android.support:support-v4:19.0.+'
 }
 
 android {
@@ -36,8 +21,8 @@ android {
             jni.srcDirs = ['jni']
         }
 
-        debug.setRoot('build-types/debug')
-        release.setRoot('build-types/release')
+        /*debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')*/
     }
 
     productFlavors {
