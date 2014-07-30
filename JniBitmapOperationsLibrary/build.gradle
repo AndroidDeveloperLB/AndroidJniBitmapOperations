@@ -1,0 +1,32 @@
+apply plugin: 'android-library'
+
+version '0.0.1'
+group 'com.jni.bitmap_operations'
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.1.0"
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            jni.srcDirs = ['jni']
+        }
+    }
+
+    defaultConfig {
+        ndk {
+            moduleName "JniBitmapOperationsLibrary"
+            ldLibs "log", "jnigraphics"
+        }
+    }
+
+}
