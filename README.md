@@ -35,23 +35,29 @@ The things I think this library should have :
 
 How to import the library project
 ---------------------------------
-Since ADT (at least till v22.6.2) still has problems importing Android libraries that have C/C++ code (made a post about it [**here**][1]) , the steps are:
 
- 1. in case the library has a ".cproject" file , delete it. 
- 2. delete folders "libs","gen","bin",obj" from the library folder. In case you have libraries, just remove the files you didn't add yourself.
- 3. in case the library has "cnature" or "ccnature" entries in the ".project" file, delete them, which look like:
-
- >  	  <nature>org.eclipse.cdt.core.cnature</nature>
- >  	  <nature>org.eclipse.cdt.core.ccnature</nature>
-   
- 4. right click the library, choose "add native support..." via the "android tools" context menu. make sure the name of the suggested file is the same as your C/C++ file.
- 5. build&compile the library. Make sure that it's being built using the [**NDK**][2] too.
- 6. you are ready to go.
+ 1. Create a folder in your project and call it "libs" (if you dont have one already), create another folder inside the "libs" folder you just created and call it "armeabi".
+ 2. place the [**JniBitmapOperationLibrary.so**][1] into the "armeabi" folder.
+ 3. place the [**JniBitmapHolder.java**][2] in your "src" folder.
+ 4. Thats all :)
 
 
-For now, I've handled steps 1-2 (I just made Git to ignore those files), so all you need to do is the rest of the steps.
+ [1]:  http://bit.ly/JniBitmapSO
+ 
+ [2]:  https://github.com/AndroidDeveloperLB/AndroidJniBitmapOperations/tree/master/JniBitmapOperationsLibrary/src/com/jni/bitmap_operations
+ 
+ Usage:
+-----------------------
 
-
- [1]: http://stackoverflow.com/questions/22263253/how-to-correctly-import-an-android-library-with-jni-code/22956790?noredirect=1#comment35057887_22956790
-
- [2]: https://developer.android.com/tools/sdk/ndk/index.html
+```
+// The Bitmap we want to hold in JNI
+Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.large_wallpaper);
+   	
+//hold the bitmap in JNI (this will also release the bitmap in the java "world")
+JniBitmapHolder bitmapHolder = new JniBitmapHolder(bitmap);
+				
+//get the bitmap and free the memory
+mImgeView.setImageBitmap(bitmapHolder.getBitmapAndFree());
+				
+```
+This is just a simple overview. look at the example project for a more detailed overview. Enjoy :)
