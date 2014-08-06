@@ -45,7 +45,7 @@ Since ADT (at least till v22.6.2) still has problems importing Android libraries
  >  	  <nature>org.eclipse.cdt.core.ccnature</nature>
    
  4. right click the library, choose "add native support..." via the "android tools" context menu. make sure the name of the suggested file is the same as your C/C++ file.
- 5. build&compile the library
+ 5. build&compile the library. Make sure that it's being built using the [**NDK**][2] too.
  6. you are ready to go.
 
 
@@ -53,3 +53,5 @@ For now, I've handled steps 1-2 (I just made Git to ignore those files), so all 
 
 
  [1]: http://stackoverflow.com/questions/22263253/how-to-correctly-import-an-android-library-with-jni-code/22956790?noredirect=1#comment35057887_22956790
+
+ [2]: https://developer.android.com/tools/sdk/ndk/index.html
