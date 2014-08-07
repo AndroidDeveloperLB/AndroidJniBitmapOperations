@@ -25,7 +25,7 @@ Missing features (TODO)
 
 The things I think this library should have :
 
- 1. using matrices for manipulating of the imaages.
+ 1. using matrices for manipulating of the images.
  2. decode the image directly within JNI, instead of giving it from the Java "world". This should be very handy.
  3. use different bitmap formats. Also think how to manage them nicely.                                                            
  4. get current bitmap info.
