@@ -41,10 +41,10 @@ Since ADT (at least till v22.6.2) still has problems importing Android libraries
  2. delete folders "libs","gen","bin",obj" from the library folder. In case you have libraries, just remove the files you didn't add yourself.
  3. in case the library has "cnature" or "ccnature" entries in the ".project" file, delete them, which look like:
 
- >  	  <nature>org.eclipse.cdt.core.cnature</nature>
- >  	  <nature>org.eclipse.cdt.core.ccnature</nature>
- >       <nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
->       <nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
+ >     <nature>org.eclipse.cdt.core.cnature</nature>
+ >     <nature>org.eclipse.cdt.core.ccnature</nature>
+ >     <nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
+>     <nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
   Also, you might need to delete those whole "buildCommand" tags (and their children) :
 
   >     org.eclipse.cdt.managedbuilder.core.genmakebuilder
