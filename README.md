@@ -46,8 +46,8 @@ Since ADT (at least till v22.6.2) still has problems importing Android libraries
 
   Also, you might need to delete those whole "buildCommand" tags (and their children) :
 
->     org.eclipse.cdt.managedbuilder.core.genmakebuilder
->     org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder
+  >     org.eclipse.cdt.managedbuilder.core.genmakebuilder
+  >     org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder
 
  4. right click the library, choose "add native support..." via the "android tools" context menu. make sure the name of the suggested file is the same as your C/C++ file. Make sure that it's being built using the [**NDK**][2] , or you won't be able to do it correctly.
  5. build&compile the library. 
