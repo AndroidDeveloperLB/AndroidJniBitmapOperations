@@ -43,7 +43,8 @@ Since ADT (at least till v22.6.2) still has problems importing Android libraries
 
  >  	  <nature>org.eclipse.cdt.core.cnature</nature>
  >  	  <nature>org.eclipse.cdt.core.ccnature</nature>
-
+ >       <nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
+>       <nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
   Also, you might need to delete those whole "buildCommand" tags (and their children) :
 
   >     org.eclipse.cdt.managedbuilder.core.genmakebuilder
