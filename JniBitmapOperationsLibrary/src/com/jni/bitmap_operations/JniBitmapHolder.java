@@ -8,6 +8,7 @@ public class JniBitmapHolder
   ByteBuffer _handler =null;
   static
     {
+    System.loadLibrary("gnustl_shared");
     System.loadLibrary("JniBitmapOperationsLibrary");
     }
 
