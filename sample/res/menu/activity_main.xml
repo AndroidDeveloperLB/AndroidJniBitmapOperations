@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
   <item android:icon="@android:drawable/ic_menu_info_details"
-    android:title="@string/more_info" app:showAsAction="always">
+    android:title="@string/more_info" android:showAsAction="always">
     <menu>
       <group android:menuCategory="container"
         android:checkableBehavior="none">
