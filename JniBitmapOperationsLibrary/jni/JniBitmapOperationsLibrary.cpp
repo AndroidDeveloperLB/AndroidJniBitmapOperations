@@ -501,7 +501,7 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniFlipBi
         for (int x = 0; x < jniBitmap->_bitmapInfo.width; ++x)
         {
             uint32_t pixel = previousData[jniBitmap->_bitmapInfo.width * y + x];
-            newBitmapPixels[jniBitmap->_bitmapInfo.width * y + (jniBitmap->_bitmapInfo.width - x)] = pixel;
+            newBitmapPixels[jniBitmap->_bitmapInfo.width * y + (jniBitmap->_bitmapInfo.width - 1 - x)] = pixel;
         }
     }
 
