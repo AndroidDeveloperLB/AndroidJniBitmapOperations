@@ -472,22 +472,14 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniFlipBi
     uint32_t* previousData = jniBitmap->_storedBitmapPixels;
     uint32_t* newBitmapPixels = new uint32_t[jniBitmap->_bitmapInfo.width * jniBitmap->_bitmapInfo.height];
 
-    LOGD("Starting to flip horizontal");
     for (int y = jniBitmap->_bitmapInfo.height - 1; y >= 0; --y)
     {
         for (int x = 0; x < jniBitmap->_bitmapInfo.width; ++x)
         {
             uint32_t pixel = previousData[jniBitmap->_bitmapInfo.width * y + x];
-//            newBitmapPixels[jniBitmap->_bitmapInfo.width * y + (jniBitmap->_bitmapInfo.width - x)] = pixel;
             newBitmapPixels[jniBitmap->_bitmapInfo.width * (jniBitmap->_bitmapInfo.height - y - 1) + x] = pixel;
         }
     }
-
-    /*
-      0 1 2
-      3 4 5  ou 0 1 2 3 4 5 6 7 8 ->
-      6 7 8
-    */
 
     delete[] previousData;
     jniBitmap->_storedBitmapPixels = newBitmapPixels;
@@ -504,7 +496,6 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniFlipBi
     uint32_t* previousData = jniBitmap->_storedBitmapPixels;
     uint32_t* newBitmapPixels = new uint32_t[jniBitmap->_bitmapInfo.width * jniBitmap->_bitmapInfo.height];
 
-    LOGD("Starting to flip verical");
     for (int y = jniBitmap->_bitmapInfo.height - 1; y >= 0; --y)
     {
         for (int x = 0; x < jniBitmap->_bitmapInfo.width; ++x)
