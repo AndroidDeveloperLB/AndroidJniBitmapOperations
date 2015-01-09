@@ -100,12 +100,30 @@ public class JniBitmapHolder {
         }
     }
 
+    /**
+     * Flips the bitmap on the <b>horizontal line</b>. I.e.:
+     * <br/>
+     * <pre>
+     * 0  1   2   3         8  9  10  11
+     * 4  5   6   7    >    4  5   6   7
+     * 8  9  10  11         0  1   2   3
+     * </pre>
+     */
     public void flipBitmapHorizontal() {
         if (_handler == null)
             return;
         jniFlipBitmapHorizontal(_handler);
     }
 
+    /**
+     * Flips the bitmap on the <b>vertical line</b>. I.e.:
+     * <br/>
+     * <pre>
+     * 0  1   2       2  1  0
+     * 3  4   5   >   5  4  3
+     * 6  7   8       8  7  6
+     * </pre>
+     */
     public void flipBitmapVertical() {
         if (_handler == null)
             return;
