@@ -1,5 +1,4 @@
-AndroidJniBitmapOperations
-==========================
+# AndroidJniBitmapOperations
 
 Allows to perform various simple operations on bitmaps via JNI , while also providing some protection against OOM using the native Java environment on Android
 
@@ -21,8 +20,7 @@ This library was first introduced via StackOverflow, and many of the notes writt
 Please read it here:
 http://stackoverflow.com/questions/18250951/jni-bitmap-operations-for-helping-to-avoid-oom-when-using-large-images/18250952?noredirect=1
 
-Missing features (TODO)
------------------------
+## Missing features (TODO)
 
 The things I think this library should have :
 
@@ -34,8 +32,9 @@ The things I think this library should have :
  6. rotation by any angle. 
  7. other basic operations that are available on the Android framework.
 
-How to import the library project
----------------------------------
+## How to import the library project
+### Eclipse
+
 Since ADT (at least till v22.6.2) still has problems importing Android libraries that have C/C++ code (made a post about it [**here**][1]) , the steps are:
 
  1. in case the library has a ".cproject" file , delete it. 
@@ -58,7 +57,39 @@ Since ADT (at least till v22.6.2) still has problems importing Android libraries
 
 For now, I've handled steps 1-2 (I just made Git to ignore those files), so all you need to do is the rest of the steps.
 
+### Android studio
 
- [1]: http://stackoverflow.com/questions/22263253/how-to-correctly-import-an-android-library-with-jni-code/22956790?noredirect=1#comment35057887_22956790
+Precondition: make sure that you have [**NDK**][2] installed and you either have this line in your `local.properties`
+
+`ndk.dir=/path/to/ndk`
+
+or you have `ANDROID_NDK_HOME` environment variable set.
+
+ 1. Copy `JniBitmapOperationsLibrary.cpp` into `src/main/jni` directory:
+ 
+    ![Studio folder structure](https://s3.amazonaws.com/uploads.hipchat.com/22412/120721/qZyoFrgpUnFmnHu/upload.png)
+ 2. Add this minimum NDK config to your `build.gradle`
+    
+    ```
+     android {
+     ...
+         defaultConfig {
+         ...
+             ndk {
+                 moduleName "JniBitmapOperationsLibrary"
+                 ldLibs "log",  "jnigraphics"
+                 //optional: filter abis to compile for: abiFilters "x86", "armeabi-v7a"
+                 //otherwise it will compile for all abis: "armeabi", "armeabi-v7a", "x86", and "mips"
+             }
+         }
+     }
+     ```
+    
+ 3. Copy `JniBitmapHolder` into the project, putting it into the same package (`com.jni.bitmap_operations`).
+ 
+You now should be able to use `JniBitmapHolder` to process images on NDK side.
+ 
+ 
+[1]: http://stackoverflow.com/questions/22263253/how-to-correctly-import-an-android-library-with-jni-code/22956790?noredirect=1#comment35057887_22956790
 
  [2]: https://developer.android.com/tools/sdk/ndk/index.html
