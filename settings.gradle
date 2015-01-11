@@ -1,1 +1,1 @@
-include ':JniBitmapOperationsLibrary'
+include ':JniBitmapOperationsLibrary', ':sample'
