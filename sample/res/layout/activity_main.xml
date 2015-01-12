@@ -80,12 +80,12 @@
             android:layout_height="wrap_content"
             tools:ignore="ContentDescription" />
 
-        <!-- flipped on the horizontal -->
+        <!-- flipped horizontally -->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="flipped on the horizontal"
+            android:text="flipped horizontally"
             tools:ignore="HardcodedText" />
 
         <ImageView
@@ -94,12 +94,12 @@
             android:layout_height="wrap_content"
             tools:ignore="ContentDescription" />
 
-        <!-- flipped on the vertical -->
+        <!-- flipped vertically -->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="flipped on the vertical"
+            android:text="flipped vertically"
             tools:ignore="HardcodedText" />
 
         <ImageView
