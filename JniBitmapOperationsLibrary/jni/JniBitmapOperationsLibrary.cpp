@@ -489,17 +489,22 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniFlipBi
     if (jniBitmap->_storedBitmapPixels == NULL)
 	return;
     uint32_t* previousData = jniBitmap->_storedBitmapPixels;
-    uint32_t* newBitmapPixels = new uint32_t[jniBitmap->_bitmapInfo.width
-	    * jniBitmap->_bitmapInfo.height];
-    for (int y = jniBitmap->_bitmapInfo.height - 1; y >= 0; --y)
-	for (int x = 0; x < jniBitmap->_bitmapInfo.width; ++x)
+    int width = jniBitmap->_bitmapInfo.width, middle = width / 2, height =
+	    jniBitmap->_bitmapInfo.height;
+    for (int y = 0; y < height; ++y)
+	{
+	//for each row, switch between the first pixels and the last ones
+	uint32_t* idx1 = previousData + width * y;
+	uint32_t* idx2 = previousData + width * (y + 1) - 1;
+	for (int x = 0; x < middle; ++x)
 	    {
-	    uint32_t pixel = previousData[jniBitmap->_bitmapInfo.width * y + x];
-	    newBitmapPixels[jniBitmap->_bitmapInfo.width * y
-		    + (jniBitmap->_bitmapInfo.width - 1 - x)] = pixel;
+	    uint32_t pixel = *idx1; //pixel= previousData[rowStart + x];
+	    *idx1 = *idx2; //previousData[rowStart + x] =previousData[rowStart + (width - x - 1)];
+	    *idx2 = pixel; //previousData[rowStart + (width - x - 1)] = pixel;
+	    ++idx1;
+	    --idx2;
 	    }
-    delete[] previousData;
-    jniBitmap->_storedBitmapPixels = newBitmapPixels;
+	}
     }
 
 /**flips a bitmap vertically, as such:
@@ -516,15 +521,20 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniFlipBi
     if (jniBitmap->_storedBitmapPixels == NULL)
 	return;
     uint32_t* previousData = jniBitmap->_storedBitmapPixels;
-    uint32_t* newBitmapPixels = new uint32_t[jniBitmap->_bitmapInfo.width
-	    * jniBitmap->_bitmapInfo.height];
-    for (int y = jniBitmap->_bitmapInfo.height - 1; y >= 0; --y)
-	for (int x = 0; x < jniBitmap->_bitmapInfo.width; ++x)
+    int width = jniBitmap->_bitmapInfo.width, height =
+	    jniBitmap->_bitmapInfo.height, middle = height / 2;
+    for (int y = 0; y < middle; ++y)
+	{
+	//for each row till the middle row, switch its pixels with the one at the bottom
+	uint32_t* idx1 = previousData + width * y;
+	uint32_t* idx2 = previousData + width * (height - y - 1);
+	for (int x = 0; x < width; ++x)
 	    {
-	    uint32_t pixel = previousData[jniBitmap->_bitmapInfo.width * y + x];
-	    newBitmapPixels[jniBitmap->_bitmapInfo.width
-		    * (jniBitmap->_bitmapInfo.height - y - 1) + x] = pixel;
+	    uint32_t pixel =*idx1;
+	    *idx1=*idx2;
+	    *idx2=pixel;
+	    ++idx2;
+	    ++idx1;
 	    }
-    delete[] previousData;
-    jniBitmap->_storedBitmapPixels = newBitmapPixels;
+	}
     }
