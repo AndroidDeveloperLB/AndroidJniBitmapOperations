@@ -39,6 +39,7 @@ The things I think this library should have :
  5. face detection
  6. rotation by any angle. 
  7. other basic operations that are available on the Android framework.
+ 8. Make more optimizations, perhaps by investigating the numebr of cache-misses, which is the biggest "enemy" for image manipulations in case of large bitmap. See [**this link][3] for more information. 
 
 ## How to import the library project
 ### Eclipse
@@ -101,3 +102,5 @@ You now should be able to use `JniBitmapHolder` to process images on NDK side.
 [1]: http://stackoverflow.com/questions/22263253/how-to-correctly-import-an-android-library-with-jni-code/22956790?noredirect=1#comment35057887_22956790
 
  [2]: https://developer.android.com/tools/sdk/ndk/index.html
+ 
+ [3]: http://www.powershow.com/view/29fcd-NjRmN/Fast_matrix_multiplication_Cache_usage_powerpoint_ppt_presentation
