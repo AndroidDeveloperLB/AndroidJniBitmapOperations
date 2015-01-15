@@ -39,7 +39,7 @@ The things I think this library should have :
  5. face detection
  6. rotation by any angle. 
  7. other basic operations that are available on the Android framework.
- 8. Make more optimizations, perhaps by investigating the numebr of cache-misses, which is the biggest "enemy" for image manipulations in case of large bitmap. See [**this link][3] for more information. 
+ 8. Make more optimizations, perhaps by investigating the numebr of cache-misses, which is the biggest "enemy" for image manipulations in case of large bitmap. See [**this link**][3] for more information. 
 
 ## How to import the library project
 ### Eclipse
