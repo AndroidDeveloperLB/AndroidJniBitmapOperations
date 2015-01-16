@@ -74,6 +74,12 @@ Precondition: make sure that you have [**NDK**][2] installed and you either have
 
 or you have `ANDROID_NDK_HOME` environment variable set.
 
+#### Getting started
+
+Just import the whole cloned project and run the sample.
+
+#### Further configuring and using as the library
+
  1. Copy `JniBitmapOperationsLibrary.cpp` into `src/main/jni` directory:
  
     ![Studio folder structure](https://s3.amazonaws.com/uploads.hipchat.com/22412/120721/qZyoFrgpUnFmnHu/upload.png)
