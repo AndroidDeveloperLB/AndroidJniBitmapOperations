@@ -14,17 +14,22 @@ android {
             resources.srcDirs = ['src']
             aidl.srcDirs = ['src']
             renderscript.srcDirs = ['src']
-            jni.srcDirs = []
+            jni.srcDirs = ['jni']
         }
     }
 
     defaultConfig {
         ndk {
             moduleName "JniBitmapOperationsLibrary"
-            ldLibs "log", "jnigraphics"
+            ldLibs "log", "bitmap"
+            cFlags "-DANDROID_NDK_HOME -ljnigraphics"
+            stl "stlport_shared"
         }
     }
 
+
+
+/*
     task buildNative(type: Exec, description: 'Compile JNI source via NDK') {
         def ndkDir = android.plugin.ndkFolder
         commandLine "$ndkDir/ndk-build",
@@ -46,4 +51,5 @@ android {
     tasks.withType(JavaCompile) {
         compileTask -> compileTask.dependsOn buildNative
     }
+    */
 }
