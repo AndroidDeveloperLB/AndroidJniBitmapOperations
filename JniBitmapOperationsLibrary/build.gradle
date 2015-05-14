@@ -21,8 +21,8 @@ android {
     defaultConfig {
         ndk {
             moduleName "JniBitmapOperationsLibrary"
-            ldLibs "log", "bitmap"
-            cFlags "-DANDROID_NDK_HOME -ljnigraphics"
+            ldLibs "log", "jnigraphics"
+            cFlags "-DANDROID_NDK_HOME"
             stl "stlport_shared"
         }
     }
