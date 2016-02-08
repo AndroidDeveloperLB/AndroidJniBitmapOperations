@@ -26,7 +26,7 @@ Here's a sample of what can be done:
 ![animated demo](https://raw.githubusercontent.com/AndroidDeveloperLB/AndroidJniBitmapOperations/master/demo.gif)
 
 ## Known issues
-It's very annoying to import the library. I personally haven't succeeded doing so on Android-Studio, but on Eclipse it has issues, and on some cases, when you open the C/C++ file, it shows errors (even if it succeeded building a moment before). If this happens, try to close and open the library project and don't open the C/C++ file unless you wish to edit it.
+Android-Studio still doesn't support C/C++ code well. It's easy to import the project and try it, but I think it's quite hard to do it for your own project.
 
 ## Missing features (TODO)
 
