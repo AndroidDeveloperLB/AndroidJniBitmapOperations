@@ -110,6 +110,7 @@ If you are interested in more features, and don't want to modify the code of thi
 
  - https://github.com/suckgamony/RapidDecoder
  - https://github.com/facebook/fresco
+ - https://android-arsenal.com/tag/63
 
 
 [1]: http://stackoverflow.com/questions/22263253/how-to-correctly-import-an-android-library-with-jni-code/22956790?noredirect=1#comment35057887_22956790
