@@ -104,7 +104,7 @@ Just import the whole cloned project and run the sample.
  
 You now should be able to use `JniBitmapHolder` to process images on NDK side.
  
-####  Similar libraries
+##  Similar libraries
 
 If you are interested in more features, and don't want to modify the code of this library, you could try out those similar libraries:
 
