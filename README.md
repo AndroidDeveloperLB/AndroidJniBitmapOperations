@@ -104,7 +104,14 @@ Just import the whole cloned project and run the sample.
  
 You now should be able to use `JniBitmapHolder` to process images on NDK side.
  
- 
+####  Similar libraries
+
+If you are interested in more features, and don't want to modify the code of this library, you could try out those similar libraries:
+
+ - https://github.com/suckgamony/RapidDecoder
+ - https://github.com/facebook/fresco
+
+
 [1]: http://stackoverflow.com/questions/22263253/how-to-correctly-import-an-android-library-with-jni-code/22956790?noredirect=1#comment35057887_22956790
 
  [2]: https://developer.android.com/tools/sdk/ndk/index.html
