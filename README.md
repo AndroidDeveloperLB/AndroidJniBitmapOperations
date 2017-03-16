@@ -25,6 +25,42 @@ Here's a sample of what can be done:
 
 ![animated demo](https://raw.githubusercontent.com/AndroidDeveloperLB/AndroidJniBitmapOperations/master/demo.gif)
 
+
+
+How to add it to your project
+---------------------------------
+
+ 1. Create a folder under the parent directory of your project and call it "libs" (if you dont have one already).
+ 2. Download the [**Jar and .SO**][4] files, unzip it.
+ 3. Copy and paste the armeabi folders into the "libs" folder you created in step 1.
+ 4. Copy and paste the libJniBitmapOperationsLibrary.jar into the "libs" folder you created in step 1.
+ 5. Thats all :)
+
+
+ 
+ 
+ Usage:
+-----------------------
+
+```
+// The Bitmap we want to hold in JNI
+Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.large_wallpaper);
+   	
+//hold the bitmap in JNI (this will also release the bitmap in the java "world")
+JniBitmapHolder bitmapHolder = new JniBitmapHolder(bitmap);
+				
+//get the bitmap and free the memory
+mImgeView.setImageBitmap(bitmapHolder.getBitmapAndFree());
+				
+```
+This is just a simple overview. look at the example project for a more detailed overview. Enjoy :)
+
+
+
+
+
+
+
 ## Known issues
 Android-Studio still doesn't support C/C++ code well. It's easy to import the project and try it, but I think it's quite hard to do it for your own project.
 
@@ -118,3 +154,4 @@ If you are interested in more features, and don't want to modify the code of thi
  [2]: https://developer.android.com/tools/sdk/ndk/index.html
  
  [3]: http://www.powershow.com/view/29fcd-NjRmN/Fast_matrix_multiplication_Cache_usage_powerpoint_ppt_presentation
+ [4]:  http://bit.ly/JNI_BITMAP_SO_FILE
