@@ -9,6 +9,7 @@ gradle.properties
 *.apk
 *.ap_
 *.jar
+.externalNativeBuild
 
 # files for the dex VM
 *.dex
