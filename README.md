@@ -80,6 +80,29 @@ Just import the whole cloned project and run the sample.
 
 #### Further configuring and using as the library
 
+#### Option 1
+ 1. Add this repository as a git submodule. For these instructions we added in a folder named `AndroidJniBitmapOperations`
+ 2. Add the following lines to your `settings.gradle` file
+ 
+    ```
+    include ':JniBitmapOperationsLibrary'
+    project(':JniBitmapOperationsLibrary').projectDir = new File(settingsDir, '../AndroidJniBitmapOperations/JniBitmapOperationsLibrary')
+    ```
+ 3. Add the following lines to your top level `build.gradle` file inside the `buildscript` section. Replace the versions with whatever your project is using as needed.
+ 
+    ```
+    // Variables for JniBitmapOperationsLibrary
+    ext.propCompileSdkVersion = 23
+    ext.propBuildToolsVersion = "27.0.3"
+    ```
+ 4. Add the following lines to your app `build.gradle` file inside the `dependancies` section
+ 
+    ```
+    implementation project(':JniBitmapOperationsLibrary')
+    ```
+
+#### Option 2
+
  1. Copy `JniBitmapOperationsLibrary.cpp` into `src/main/jni` directory:
  
     ![Studio folder structure](https://s3.amazonaws.com/uploads.hipchat.com/22412/120721/qZyoFrgpUnFmnHu/upload.png)

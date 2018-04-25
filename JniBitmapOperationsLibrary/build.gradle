@@ -27,7 +27,11 @@ android {
         }
     }
 
-
+    externalNativeBuild {
+        ndkBuild {
+            path 'jni/Android.mk'
+        }
+    }
 
 /*
     task buildNative(type: Exec, description: 'Compile JNI source via NDK') {
