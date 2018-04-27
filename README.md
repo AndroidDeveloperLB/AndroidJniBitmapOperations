@@ -86,7 +86,7 @@ Just import the whole cloned project and run the sample.
  
     ```
     include ':JniBitmapOperationsLibrary'
-    project(':JniBitmapOperationsLibrary').projectDir = new File(settingsDir, '../AndroidJniBitmapOperations/JniBitmapOperationsLibrary')
+    project(':JniBitmapOperationsLibrary').projectDir = new File(rootProject.getProjectDir(), 'AndroidJniBitmapOperations/JniBitmapOperationsLibrary')
     ```
  3. Add the following lines to your top level `build.gradle` file inside the `buildscript` section. Replace the versions with whatever your project is using as needed.
  
