@@ -87,7 +87,7 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniCropBi
 	uint32_t right, uint32_t bottom)
     {
     JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
-    if (jniBitmap->_storedBitmapPixels == NULL)
+    if (jniBitmap == NULL || jniBitmap->_storedBitmapPixels == NULL)
 	return;
     uint32_t* previousData = jniBitmap->_storedBitmapPixels;
     uint32_t oldWidth = jniBitmap->_bitmapInfo.width;
@@ -113,7 +113,7 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotate
 	JNIEnv * env, jobject obj, jobject handle)
     {
     JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
-    if (jniBitmap->_storedBitmapPixels == NULL)
+    if (jniBitmap == NULL || jniBitmap->_storedBitmapPixels == NULL)
 	return;
     uint32_t* previousData = jniBitmap->_storedBitmapPixels;
     uint32_t newWidth = jniBitmap->_bitmapInfo.height;
@@ -141,7 +141,7 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotate
 	JNIEnv * env, jobject obj, jobject handle)
     {
     JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
-    if (jniBitmap->_storedBitmapPixels == NULL)
+    if (jniBitmap == NULL || jniBitmap->_storedBitmapPixels == NULL)
 	return;
     uint32_t* previousData = jniBitmap->_storedBitmapPixels;
     uint32_t newWidth = jniBitmap->_bitmapInfo.height;
@@ -169,7 +169,7 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotate
 	JNIEnv * env, jobject obj, jobject handle)
     {
     JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
-    if (jniBitmap->_storedBitmapPixels == NULL)
+    if (jniBitmap == NULL || jniBitmap->_storedBitmapPixels == NULL)
 	return;
     uint32_t* pixels = jniBitmap->_storedBitmapPixels;
     uint32_t* pixels2 = jniBitmap->_storedBitmapPixels;
@@ -211,7 +211,7 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniFreeBi
 	JNIEnv * env, jobject obj, jobject handle)
     {
     JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
-    if (jniBitmap->_storedBitmapPixels == NULL)
+    if (jniBitmap == NULL || jniBitmap->_storedBitmapPixels == NULL)
 	return;
     delete[] jniBitmap->_storedBitmapPixels;
     jniBitmap->_storedBitmapPixels = NULL;
@@ -223,7 +223,7 @@ JNIEXPORT jobject JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniGet
 	JNIEnv * env, jobject obj, jobject handle)
     {
     JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
-    if (jniBitmap->_storedBitmapPixels == NULL)
+    if (jniBitmap == NULL || jniBitmap->_storedBitmapPixels == NULL)
 	{
 	LOGD("no bitmap data was stored. returning null...");
 	return NULL;
@@ -311,7 +311,7 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniScaleN
 	uint32_t newHeight)
     {
     JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
-    if (jniBitmap->_storedBitmapPixels == NULL)
+    if (jniBitmap == NULL || jniBitmap->_storedBitmapPixels == NULL)
 	return;
     uint32_t oldWidth = jniBitmap->_bitmapInfo.width;
     uint32_t oldHeight = jniBitmap->_bitmapInfo.height;
@@ -353,7 +353,7 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniScaleB
     {
 
     JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
-    if (jniBitmap->_storedBitmapPixels == NULL)
+    if (jniBitmap == NULL || jniBitmap->_storedBitmapPixels == NULL)
 	return;
     uint32_t oldWidth = jniBitmap->_bitmapInfo.width;
     uint32_t oldHeight = jniBitmap->_bitmapInfo.height;
@@ -486,7 +486,7 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniFlipBi
 	JNIEnv * env, jobject obj, jobject handle)
     {
     JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
-    if (jniBitmap->_storedBitmapPixels == NULL)
+    if (jniBitmap == NULL || jniBitmap->_storedBitmapPixels == NULL)
 	return;
     uint32_t* previousData = jniBitmap->_storedBitmapPixels;
     int width = jniBitmap->_bitmapInfo.width, middle = width / 2, height =
@@ -518,7 +518,7 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniFlipBi
 	JNIEnv * env, jobject obj, jobject handle)
     {
     JniBitmap* jniBitmap = (JniBitmap*) env->GetDirectBufferAddress(handle);
-    if (jniBitmap->_storedBitmapPixels == NULL)
+    if (jniBitmap == NULL || jniBitmap->_storedBitmapPixels == NULL)
 	return;
     uint32_t* previousData = jniBitmap->_storedBitmapPixels;
     int width = jniBitmap->_bitmapInfo.width, height =
