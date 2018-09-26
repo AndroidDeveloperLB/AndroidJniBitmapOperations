@@ -25,6 +25,8 @@ android {
             cFlags "-DANDROID_NDK_HOME"
             stl "stlport_shared"
         }
+        minSdkVersion  8
+        targetSdkVersion 23
     }
 
     externalNativeBuild {
