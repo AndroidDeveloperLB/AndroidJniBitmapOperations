@@ -374,10 +374,12 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniScaleB
 	    rgbBottomMiddle, result;
     for (x = 0; x < newWidth; ++x)
 	{
-	xTopLeft = (int) (xt = x / xRatio);
+	xTopLeft = xt = (x / xRatio + (x+1)/ xRatio)/2;
 	// when meeting the most right edge, move left a little
-	if (xTopLeft >= oldWidth - 1)
-	    xTopLeft--;
+	if (xTopLeft >= oldWidth - 1){
+	    xTopLeft = oldWidth - 2; 
+            xt = oldWidth - 1;// use the pixel of exactly at the edge;
+	}
 	if (xt <= xTopLeft + 1)
 	    {
 	    // we are between the left and right pixel
@@ -387,10 +389,12 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniScaleB
 	    }
 	for (y = 0, lastTopLefty = -30000; y < newHeight; ++y)
 	    {
-	    yTopLeft = (int) (yt = y / yratio);
+	    yTopLeft = (int) (yt = (y / yratio + (y+1)/ yratio)/2);
 	    // when meeting the most bottom edge, move up a little
-	    if (yTopLeft >= oldHeight - 1)
-		--yTopLeft;
+	    if (yTopLeft >= oldHeight - 1){
+		yTopLeft = oldHeight - 2;
+                yt = oldHeight - 1; // use the pixel of exactly at the edge;
+	    }
 	    if (lastTopLefty == yTopLeft - 1)
 		{
 		// we went down only one rectangle
@@ -422,7 +426,7 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniScaleB
 			&rgbTopLeft);
 		//rgbTopRight=startingImageData[xTopLeft+1][yTopLeft];
 		convertIntToArgb(
-			previousData[((yTopLeft + 1) * oldWidth) + xTopLeft],
+			previousData[(yTopLeft* oldWidth) + xTopLeft + 1],
 			&rgbTopRight);
 		rgbTopMiddle.alpha = rgbTopLeft.alpha * xcRatio2
 			+ rgbTopRight.alpha * xcratio1;
