@@ -422,7 +422,7 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniScaleB
 			&rgbTopLeft);
 		//rgbTopRight=startingImageData[xTopLeft+1][yTopLeft];
 		convertIntToArgb(
-			previousData[((yTopLeft + 1) * oldWidth) + xTopLeft],
+			previousData[(yTopLeft* oldWidth) + xTopLeft + 1],
 			&rgbTopRight);
 		rgbTopMiddle.alpha = rgbTopLeft.alpha * xcRatio2
 			+ rgbTopRight.alpha * xcratio1;
