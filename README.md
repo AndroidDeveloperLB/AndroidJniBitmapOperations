@@ -20,6 +20,9 @@ This library was first introduced via StackOverflow, and many of the notes writt
 Please read it here:
 http://stackoverflow.com/questions/18250951/jni-bitmap-operations-for-helping-to-avoid-oom-when-using-large-images/18250952?noredirect=1
 
+Starting from Android 11 (R - API 30), it seems to be possible to also decode the bitmaps right in JNI, so this might be handy to perform operations on it right away (though not sure how to do it) :
+https://developer.android.com/ndk/guides/image-decoder
+
 ## Screenshot
 Here's a sample of what can be done:
 
